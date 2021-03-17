@@ -1,9 +1,26 @@
 <?php
 
+use App\Events\FormSubmitted;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/pusher', function () {
+    return view('pusher.index');
+});
+
+Route::get('/sender', function () {
+    return view('pusher.sender');
+});
+
+Route::post('/sender', function () {
+    $text = request()->text;
+
+    event(new FormSubmitted($text));
+    Session::flash('success', 'Udało się');
+    return redirect('/sender');
 });
 
 Route::get('/posts','PostController@index')->name('post.index');
