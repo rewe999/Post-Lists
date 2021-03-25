@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Post;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Repositories\PostRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,8 +21,9 @@ class PostController extends Controller
 
     public function index(): view
     {
-        $posts = Post::latest()->paginate(3);
-        return view('posts.index', ['posts' => $posts]);
+        $user = Auth::user();
+        $posts = Post::latest()->with('user')->paginate(3);
+        return view('posts.index', ['posts' => $posts,'user' => $user]);
     }
 
     public function create(): view
@@ -39,8 +41,10 @@ class PostController extends Controller
 
     public function show($id)
     {
+        $user = Auth::user();
         $post = Post::findOrFail($id);
-        return view('posts.show', ['post' => $post]);
+        if(!($post->user->id == $user->id)) return redirect('posts');
+        return view('posts.show', ['post' => $post,'user'=>$user]);
     }
 
     public function edit($id, PostRequest $request)
@@ -54,6 +58,9 @@ class PostController extends Controller
     public function destroy(int $id): RedirectResponse
     {
         $this->postRepository->destroy($id);
-        return redirect('/posts')->with(['ok' => "Udało sie usunąć kurwa"]);
+        return redirect('/posts')->with(['ok' => "Udało sie usunąć"]);
     }
+
+
+
 }

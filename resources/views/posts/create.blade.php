@@ -1,4 +1,4 @@
-@extends('app')
+@extends('layouts.app')
 @section('content')
     <h1 class="text-center">Add new Post</h1>
     @if($errors)

@@ -1,4 +1,4 @@
-@extends('app')
+@extends('layouts.app')
 @section('content')
     <div class="row">
         <button class="btn btn-success m-auto">
@@ -18,21 +18,23 @@
         <tbody>
         @foreach($posts as $post)
             <tr>
-                <th scope="row">{{$post->id}}</th>
+                <th scope="row">{{$post->user->id}}</th>
                 <td><img src="{{Request::getSchemeAndHttpHost()}}/storage/{{ $post->avatar  }}" class="imgAvatar" alt="img"></td>
                 <td>{{$post->name}}</td>
                 <td>{{$post->price}}</td>
                 <td>{{$post->desc}}</td>
-                <td>
-                    <div class="form-check form-check-inline pl-2">
-                        <form action="/posts/{{$post->id}}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger">X</button>
-                        </form>
-                        <button class="btn btn-info"><a href="{{route('post.show',$post->id)}}">Edit</a> </button>
-                    </div>
-                </td>
+                @if($post->user->id == $user->id)
+                    <td>
+                        <div class="form-check form-check-inline pl-2">
+                            <form action="/posts/{{$post->id}}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger">X</button>
+                            </form>
+                            <button class="btn btn-info"><a href="{{route('post.show',$post->id)}}">Edit</a> </button>
+                        </div>
+                    </td>
+                @endif
             </tr>
         @endforeach
         </tbody>

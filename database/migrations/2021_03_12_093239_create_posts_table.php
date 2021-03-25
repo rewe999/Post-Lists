@@ -19,6 +19,9 @@ class CreatePostsTable extends Migration
             $table->string('name');
             $table->integer('price');
             $table->text('desc');
+            $table->unsignedBigInteger("user_id");
+            $table->foreign("user_id")->references("id")->on("users")
+                ->onDelete("cascade");
             $table->timestamps();
         });
     }

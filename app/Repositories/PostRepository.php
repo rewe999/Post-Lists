@@ -6,6 +6,7 @@ use App\Events\PostCreated;
 use App\Http\Requests\PostRequest;
 use App\Post;
 use App\Interfaces\PostRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 
 class PostRepository implements PostRepositoryInterface
 {
@@ -31,6 +32,7 @@ class PostRepository implements PostRepositoryInterface
     public function store(PostRequest $request)
     {
         $post = new Post();
+        $user = Auth::user();
         if ($request->hasFile('avatar')){
             $path = $request['avatar']->store('avatars','public');
             $post->avatar = $path;
@@ -38,6 +40,7 @@ class PostRepository implements PostRepositoryInterface
         $post->name = $request->input('name');
         $post->price = $request->input('price');
         $post->desc = $request->input('desc');
+        $post->user_id = $user->id;
         $post->save();
 
         PostCreated::dispatch($post);
