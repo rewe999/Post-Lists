@@ -30,7 +30,6 @@ class PostCreated extends Mailable
      */
     public function build()
     {
-        return $this->from($this->email)
-            ->view('posts.index');
+        return $this->subject('Invitation')->view('emails.email',['mail'=>$this->email]);
     }
 }

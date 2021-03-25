@@ -1,5 +1,7 @@
 <?php
 
+use App\Mail\UserEmail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,3 +20,12 @@ Route::middleware(['auth'])->group(function (){
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/send-mail', function (){
+    $mail = [
+      'title' => 'Mail title',
+      'body' => 'content of mail',
+    ];
+    Mail::to(env('MAIL_FROM_ADDRESS'))->send(new UserEmail($mail));
+    echo 'Send Mail';
+});

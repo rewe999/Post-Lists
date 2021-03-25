@@ -2,11 +2,12 @@
 
 namespace App\Repositories;
 
-use App\Events\PostCreated;
 use App\Http\Requests\PostRequest;
+use App\Mail\PostCreated;
 use App\Post;
 use App\Interfaces\PostRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class PostRepository implements PostRepositoryInterface
 {
@@ -43,7 +44,9 @@ class PostRepository implements PostRepositoryInterface
         $post->user_id = $user->id;
         $post->save();
 
-        PostCreated::dispatch($post);
+//        PostCreated::dispatch($post);
+
+        Mail::to(env('MAIL_FROM_ADDRESS'))->send(new PostCreated($request->input('name')));
     }
 
 }
