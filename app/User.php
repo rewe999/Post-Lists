@@ -16,13 +16,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','id',
     ];
-
-    public function post()
-    {
-        return $this->belongsTo(Post::class);
-    }
 
     /**
      * The attributes that should be hidden for arrays.
@@ -45,5 +40,10 @@ class User extends Authenticatable
     public function posts()
     {
         $this->hasMany(Post::class);
+    }
+
+    public function userData()
+    {
+        return $this->hasOne(UserData::class);
     }
 }

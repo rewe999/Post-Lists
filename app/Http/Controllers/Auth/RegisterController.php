@@ -7,6 +7,7 @@ use App\Mail\UserEmail;
 use App\Observers\UserObserver;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use App\UserData;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -67,10 +68,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            ]);
+
+        $id = $user->id;
+
+        UserData::create([
+            'user_id' => $id
         ]);
+
+        return $user;
     }
 }

@@ -21,6 +21,8 @@ Route::middleware(['auth'])->prefix('settings')->group(function (){
     Route::get('/','UserSettingsController@settings')->name('user.settings');
     Route::post('/password','UserSettingsController@password')->name('user.edit.password');
     Route::post('/name','UserSettingsController@editName')->name('user.edit.name');
+    Route::get('/data','UserSettingsController@show')->name('user.show');
+    Route::post('/editUser','UserSettingsController@edit')->name('user.edit');
 });
 
 Auth::routes();
