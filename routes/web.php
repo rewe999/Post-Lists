@@ -17,6 +17,12 @@ Route::middleware(['auth'])->group(function (){
     Route::put('/posts/{id}/edit','PostController@edit')->name("post.edit");
 });
 
+Route::middleware(['auth'])->prefix('settings')->group(function (){
+    Route::get('/','UserSettingsController@settings')->name('user.settings');
+    Route::post('/password','UserSettingsController@password')->name('user.edit.password');
+    Route::post('/name','UserSettingsController@editName')->name('user.edit.name');
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
